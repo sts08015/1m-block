@@ -5,6 +5,7 @@
 
 ## usage
 syntax : sudo 1m-block <site list file>
+
 sample : sudo 1m-block top-1m.db
 
 
@@ -16,3 +17,5 @@ sample : sudo 1m-block top-1m.db
 I added test.gilgil.net in db (id = 0)
 
 ![block](https://user-images.githubusercontent.com/31784008/140666628-f64ea4dd-ee27-4e5c-a761-d35d433de59c.PNG)
+  
+you can find out test.gilgil.net and fb.com are blocked!!
