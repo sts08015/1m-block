@@ -32,10 +32,36 @@ bool check_http_header(char* payload)
 
 	ptr = strtok(NULL,"\r\n");
 	if(ptr == NULL) return false;
-	ptr = strstr(ptr,db);
-	if(ptr == NULL) return false;
-	if(strcmp(ptr,db) != 0) return false;
-	return true;
+	ptr += 6;	//host
+	if(strncmp(ptr,"www.",4) == 0) ptr+=4;
+
+	sqlite3* db;
+	sqlite3_stmt* res;
+
+	int rc = sqlite3_open("./top-1m.db",&db);
+	if(rc != SQLITE_OK)
+	{
+		fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
+		sqlite3_close(db);
+		return false;
+	}
+	
+	const char* sql = "SELECT* FROM website WHERE host LIKE ?";
+	rc = sqlite3_prepare_v2(db, sql, -1, &res, 0);
+    if (rc == SQLITE_OK) sqlite3_bind_text(res, 1, ptr, strlen(ptr), NULL);
+    else fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(db));
+    int step = sqlite3_step(res);
+    if (step == SQLITE_ROW)
+    {
+        printf("%s: ", sqlite3_column_text(res, 0));
+        printf("%s\n", sqlite3_column_text(res, 1));
+		//puts("drop!");
+		return true;
+    } 
+    sqlite3_finalize(res);
+    sqlite3_close(db);
+
+	return false;
 }
 
 static int cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg,struct nfq_data *nfa, void *data)
@@ -137,7 +163,7 @@ int main(int argc, char **argv)
 
 	for (;;) {
 		if ((rv = recv(fd, buf, sizeof(buf), 0)) >= 0) {
-			printf("pkt received\n");
+			//printf("pkt received\n");
 			nfq_handle_packet(h, buf, rv);
 			continue;
 		}

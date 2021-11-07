@@ -4,3 +4,6 @@
 #ignore command files
 iptable_cmd_reset
 iptable_cmd_set
+
+#ignore .csv
+*.csv
