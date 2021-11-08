@@ -55,7 +55,6 @@ bool check_http_header(char* payload)
     {
         printf("%s: ", sqlite3_column_text(res, 0));
         printf("%s\n", sqlite3_column_text(res, 1));
-		//puts("drop!");
 		return true;
     } 
     sqlite3_finalize(res);
@@ -163,7 +162,6 @@ int main(int argc, char **argv)
 
 	for (;;) {
 		if ((rv = recv(fd, buf, sizeof(buf), 0)) >= 0) {
-			//printf("pkt received\n");
 			nfq_handle_packet(h, buf, rv);
 			continue;
 		}
