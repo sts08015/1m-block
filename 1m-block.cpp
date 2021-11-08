@@ -48,7 +48,7 @@ bool check_http_header(char* payload)
 	
 	const char* sql = "SELECT* FROM website WHERE host LIKE ?";
 	rc = sqlite3_prepare_v2(db, sql, -1, &res, 0);
-    if (rc == SQLITE_OK) sqlite3_bind_text(res, 1, ptr, strlen(ptr), NULL);
+    if (rc == SQLITE_OK) sqlite3_bind_text(res, 1, ptr, strlen(ptr), SQLITE_STATIC);
     else fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(db));
     int step = sqlite3_step(res);
     if (step == SQLITE_ROW)
@@ -108,7 +108,7 @@ static int cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg,struct nfq_data *n
 
 void usage()
 {
-	puts("syntax : sudo 1m-block <site list file>\nsample : sudo 1m-block top-1m.txt");
+	puts("syntax : sudo 1m-block <site list file>\nsample : sudo 1m-block top-1m.db");
 }
 
 int main(int argc, char **argv)
