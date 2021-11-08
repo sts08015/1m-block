@@ -1,5 +1,15 @@
 # 1m-block
 
+## iptables setting
+`sudo iptables -F`
+
+`sudo iptables -A OUTPUT -j NFQUEUE`
+
+`sudo iptables -A INPUT -j NFQUEUE`
+
+## netfilter
+`sudo apt install libnetfilter-queue-dev`
+
 ## sqlite3
 `sudo apt-get install sqlite3 libsqlite3-dev`
 
