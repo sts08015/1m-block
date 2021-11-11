@@ -12,7 +12,7 @@
 #include "iphdr.h"
 #include "tcphdr.h"
 
-char* db;
+char* file;
 
 bool check_http_header(char* payload)
 {
@@ -38,7 +38,7 @@ bool check_http_header(char* payload)
 	sqlite3* db;
 	sqlite3_stmt* res;
 
-	int rc = sqlite3_open("./top-1m.db",&db);
+	int rc = sqlite3_open(file,&db);
 	if(rc != SQLITE_OK)
 	{
 		fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
@@ -117,7 +117,7 @@ int main(int argc, char **argv)
 		usage();
 		return -1;
 	}
-	else db = argv[1];
+	else file = argv[1];
 
 	struct nfq_handle *h;
 	struct nfq_q_handle *qh;
