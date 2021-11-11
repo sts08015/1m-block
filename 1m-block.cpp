@@ -48,18 +48,19 @@ bool check_http_header(char* payload)
 	
 	const char* sql = "SELECT* FROM website WHERE host LIKE ?";
 	rc = sqlite3_prepare_v2(db, sql, -1, &res, 0);
-    if (rc == SQLITE_OK) sqlite3_bind_text(res, 1, ptr, strlen(ptr), SQLITE_STATIC);
-    else fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(db));
-    int step = sqlite3_step(res);
-    if (step == SQLITE_ROW)
-    {
-        printf("%s: ", sqlite3_column_text(res, 0));
-        printf("%s\n", sqlite3_column_text(res, 1));
+	if (rc == SQLITE_OK) sqlite3_bind_text(res, 1, ptr, strlen(ptr), SQLITE_STATIC);
+	else fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(db));
+	int step = sqlite3_step(res);
+	if (step == SQLITE_ROW)
+	{
+		printf("%s: ", sqlite3_column_text(res, 0));
+		printf("%s\n", sqlite3_column_text(res, 1));
+		sqlite3_finalize(res);
+		sqlite3_close(db);
 		return true;
-    } 
-    sqlite3_finalize(res);
-    sqlite3_close(db);
-
+	} 
+	sqlite3_finalize(res);
+	sqlite3_close(db);
 	return false;
 }
 
